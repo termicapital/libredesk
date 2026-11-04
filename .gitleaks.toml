@@ -1,0 +1,4 @@
+title = "Libre Desk gitleaks configuration"
+
+[extend]
+useDefault = true

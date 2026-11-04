@@ -1,0 +1,15 @@
+{
+  "glucose": 112,
+  "unit": "mg/dL",
+  "trend": "stable",
+  "range": "in_range",
+  "target_low": 70,
+  "target_high": 180,
+  "timestamp": "2026-08-22T09:15:00Z",
+  "libre_local_time": "11:15:00",
+  "age_s": 47,
+  "server_time": "2026-08-22T09:15:47Z",
+  "source": "mock",
+  "poll_after_s": 45,
+  "schema": 2
+}

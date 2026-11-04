@@ -1,0 +1,270 @@
+openapi: 3.1.0
+info:
+  title: Libre Desk device API
+  version: 2.0.0
+  description: |
+    A fail-closed, glanceable convenience display API. The official FreeStyle
+    Libre app/reader remains authoritative for readings, alarms, and treatment.
+servers:
+  - url: https://libre.example.invalid
+security:
+  - deviceBearer: []
+paths:
+  /api/v1/latest:
+    get:
+      operationId: getLatestReadingV1
+      summary: Get the frozen legacy reading without local wall time
+      security:
+        - deviceBearer: []
+      parameters:
+        - $ref: '#/components/parameters/IfNoneMatch'
+        - $ref: '#/components/parameters/UserAgent'
+      responses:
+        '200':
+          description: A validated reading that is not older than the bridge maximum age.
+          headers:
+            ETag: { $ref: '#/components/headers/ETag' }
+            Cache-Control: { $ref: '#/components/headers/NoStore' }
+            X-Request-Id: { $ref: '#/components/headers/RequestId' }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/LatestReadingV1' }
+        '304':
+          description: The reading has not changed since the supplied ETag.
+          headers:
+            X-Reading-Server-Time: { $ref: '#/components/headers/ReadingServerTime' }
+            X-Reading-Age-S: { $ref: '#/components/headers/ReadingAgeS' }
+        '401':
+          $ref: '#/components/responses/InvalidToken'
+        '403':
+          $ref: '#/components/responses/RevokedToken'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/UpstreamUnavailable'
+        '500':
+          $ref: '#/components/responses/Internal'
+  /api/v2/latest:
+    get:
+      operationId: getLatestReadingV2
+      summary: Get the clock-aware validated reading
+      security:
+        - deviceBearer: []
+      parameters:
+        - $ref: '#/components/parameters/IfNoneMatch'
+        - $ref: '#/components/parameters/UserAgent'
+      responses:
+        '200':
+          description: A validated reading with LibreLinkUp local measurement wall time that is not older than the bridge maximum age.
+          headers:
+            ETag: { $ref: '#/components/headers/ETag' }
+            Cache-Control: { $ref: '#/components/headers/NoStore' }
+            X-Request-Id: { $ref: '#/components/headers/RequestId' }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/LatestReadingV2' }
+        '304':
+          description: The reading has not changed since the supplied ETag.
+          headers:
+            X-Reading-Server-Time: { $ref: '#/components/headers/ReadingServerTime' }
+            X-Reading-Age-S: { $ref: '#/components/headers/ReadingAgeS' }
+        '401':
+          $ref: '#/components/responses/InvalidToken'
+        '403':
+          $ref: '#/components/responses/RevokedToken'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/UpstreamUnavailable'
+        '500':
+          $ref: '#/components/responses/Internal'
+  /healthz:
+    get:
+      operationId: getHealth
+      security: []
+      responses:
+        '200':
+          description: Liveness and redacted upstream health. Contains no health data.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Health' }
+  /metrics:
+    get:
+      operationId: getMetrics
+      responses:
+        '200':
+          description: Prometheus metrics.
+          content:
+            text/plain:
+              schema: { type: string }
+        '401': { $ref: '#/components/responses/InvalidToken' }
+        '403': { $ref: '#/components/responses/RevokedToken' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+  /api/v1/telemetry:
+    post:
+      operationId: postTelemetry
+      summary: Submit device operational telemetry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Telemetry' }
+      responses:
+        '202': { description: Accepted. }
+        '400': { $ref: '#/components/responses/InvalidPayload' }
+        '401': { $ref: '#/components/responses/InvalidToken' }
+        '403': { $ref: '#/components/responses/RevokedToken' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+  /api/v1/coredump:
+    post:
+      operationId: postCoredump
+      summary: Submit a base64 ESP-IDF core dump
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Coredump' }
+      responses:
+        '202': { description: Accepted. }
+        '400': { $ref: '#/components/responses/InvalidPayload' }
+        '401': { $ref: '#/components/responses/InvalidToken' }
+        '403': { $ref: '#/components/responses/RevokedToken' }
+        '413': { $ref: '#/components/responses/PayloadTooLarge' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+  /api/v1/ota/manifest:
+    get:
+      operationId: getOtaManifest
+      responses:
+        '200':
+          description: Signed-release metadata for the device.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/OtaManifest' }
+        '401': { $ref: '#/components/responses/InvalidToken' }
+        '403': { $ref: '#/components/responses/RevokedToken' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '503': { $ref: '#/components/responses/OtaUnavailable' }
+components:
+  securitySchemes:
+    deviceBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: base64url-device-token
+  parameters:
+    IfNoneMatch:
+      name: If-None-Match
+      in: header
+      required: false
+      schema: { type: string, maxLength: 200 }
+    UserAgent:
+      name: User-Agent
+      in: header
+      required: false
+      schema: { type: string, maxLength: 128 }
+  headers:
+    ETag:
+      description: Strong validator for the normalized reading.
+      schema: { type: string }
+    NoStore:
+      description: Health data must not be cached.
+      schema: { type: string, const: no-store }
+    RequestId:
+      description: Redacted request correlation identifier.
+      schema: { type: string }
+    ReadingServerTime:
+      description: Server time associated with the unchanged reading.
+      schema: { type: string }
+    ReadingAgeS:
+      description: Age in seconds associated with the unchanged reading.
+      schema: { type: integer, minimum: 0 }
+  responses:
+    InvalidToken:
+      description: Missing or invalid device token.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+    RevokedToken:
+      description: Device token was revoked.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+    RateLimited:
+      description: Device request rate limit exceeded.
+      headers:
+        Retry-After:
+          schema: { type: integer, minimum: 0 }
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+    InvalidPayload:
+      description: Request payload failed strict validation.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+    PayloadTooLarge:
+      description: Core dump payload exceeds the accepted maximum.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+    OtaUnavailable:
+      description: No firmware release is currently available.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+    UpstreamUnavailable:
+      description: No validated reading is currently available.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+    Internal:
+      description: Internal bridge failure.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorResponse' }
+  schemas:
+    LatestReadingV1:
+      $ref: './latest-v1.schema.json'
+    LatestReadingV2:
+      $ref: './latest.schema.json'
+    ErrorResponse:
+      $ref: './error.schema.json'
+    Health:
+      type: object
+      additionalProperties: false
+      required: [ok, upstream_ok, last_success_age_s, version]
+      properties:
+        ok: { type: boolean }
+        upstream_ok: { type: boolean }
+        last_success_age_s: { type: [integer, 'null'], minimum: 0 }
+        version: { type: string, minLength: 1 }
+    Telemetry:
+      type: object
+      additionalProperties: false
+      required: [firmware_version, uptime_s, min_free_heap, wifi_rssi, reconnect_count, http_errors]
+      properties:
+        firmware_version: { type: string, maxLength: 64 }
+        uptime_s: { type: integer, minimum: 0 }
+        min_free_heap: { type: integer, minimum: 0 }
+        wifi_rssi: { type: integer, maximum: 0 }
+        reconnect_count: { type: integer, minimum: 0 }
+        http_errors:
+          type: object
+          propertyNames: { pattern: '^[a-z0-9_]{1,32}$' }
+          additionalProperties: { type: integer, minimum: 0 }
+    Coredump:
+      type: object
+      additionalProperties: false
+      required: [firmware_version, reset_reason, data_base64]
+      properties:
+        firmware_version: { type: string, maxLength: 64 }
+        reset_reason: { type: string, maxLength: 64 }
+        data_base64: { type: string, contentEncoding: base64, maxLength: 524288 }
+    OtaManifest:
+      type: object
+      additionalProperties: false
+      required: [version, url, sha256, min_prev_version]
+      properties:
+        version: { type: string, minLength: 1, maxLength: 64 }
+        url: { type: string, format: uri-reference }
+        sha256: { type: string, pattern: '^[a-f0-9]{64}$' }
+        min_prev_version: { type: string, minLength: 1, maxLength: 64 }

@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "accepted_source": {
+    "commit": "dffced31f7ce0f6f2195b6b5c39703123e3d4df5",
+    "path": "firmware/reference/accepted_display_spike.c",
+    "sha256": "fa0af4d29e55a4f61b51e9b3d3e74ea15302f3facba12d2107aefbf6777bf824",
+    "bytes": 9763
+  },
+  "board": {
+    "id": "waveshare-esp32-c6-lcd-1.3",
+    "orientation": "usb-c-right",
+    "spi": {
+      "host": "SPI2_HOST",
+      "pixel_clock_hz": 12000000,
+      "mode": 0,
+      "command_bits": 8,
+      "parameter_bits": 8,
+      "queue_depth": 1
+    },
+    "pins": {
+      "sclk": 7,
+      "mosi": 6,
+      "lcd_cs": 14,
+      "dc": 15,
+      "reset": 21,
+      "backlight": 22,
+      "shared_sd_cs": 4
+    }
+  },
+  "panel": {
+    "width": 240,
+    "height": 240,
+    "gap_x": 0,
+    "gap_y": 0,
+    "bits_per_pixel": 16,
+    "rgb_element_order": "LCD_RGB_ELEMENT_ORDER_RGB",
+    "data_endian": "LCD_RGB_DATA_ENDIAN_LITTLE",
+    "invert_color": true,
+    "swap_xy": false,
+    "mirror_x": false,
+    "mirror_y": false
+  },
+  "backlight": {
+    "speed_mode": "LEDC_LOW_SPEED_MODE",
+    "timer": "LEDC_TIMER_0",
+    "channel": "LEDC_CHANNEL_0",
+    "resolution_bits": 10,
+    "frequency_hz": 5000,
+    "active_high": true,
+    "maximum_duty": 1023,
+    "initial_percent": 25
+  },
+  "direct_transfer": {
+    "frame_pixels": 57600,
+    "frame_bytes": 115200,
+    "maximum_transfer_bytes": 115208,
+    "dma_capabilities": ["MALLOC_CAP_DMA", "MALLOC_CAP_INTERNAL"],
+    "timeout_ms": 1000,
+    "black_before_display_on": true
+  },
+  "lvgl": {
+    "horizontal_resolution": 240,
+    "vertical_resolution": 240,
+    "buffer_rows": 40,
+    "buffer_pixels": 9600,
+    "double_buffer": true,
+    "monochrome": false,
+    "color_format": "LV_COLOR_FORMAT_RGB565",
+    "buff_dma": true,
+    "software_rotation": true,
+    "swap_bytes": false,
+    "rotation": "LV_DISPLAY_ROTATION_90"
+  },
+  "startup_order": [
+    "backlight_init_off", "shared_sd_cs_high", "create_semaphore",
+    "spi_bus_init", "panel_io_create", "st7789_create", "panel_reset",
+    "panel_init", "panel_set_gap", "panel_swap_xy", "panel_mirror",
+    "panel_invert", "allocate_frame", "present_black_and_wait",
+    "panel_display_on", "set_initial_brightness",
+    "acceptance_solids_if_enabled", "free_completed_frame", "lvgl_init",
+    "lvgl_ready_for_handoff", "lvgl_add_display", "delete_direct_semaphore", "lvgl_lock",
+    "lvgl_rotate_90", "active_screen_black",
+    "acceptance_card_if_enabled", "lvgl_unlock", "publish_display"
+  ],
+  "acceptance": {
+    "solid_frames": [
+      {"name": "RED", "rgb565": "0xF800", "duration_ms": 1000},
+      {"name": "GREEN", "rgb565": "0x07E0", "duration_ms": 1000},
+      {"name": "BLUE", "rgb565": "0x001F", "duration_ms": 1000},
+      {"name": "WHITE", "rgb565": "0xFFFF", "duration_ms": 1000}
+    ],
+    "corner_blocks": [
+      {"name": "red_tl", "x": 4, "y": 4, "width": 36, "height": 36, "rgb888": "0xFF0000"},
+      {"name": "green_tr", "x": 200, "y": 4, "width": 36, "height": 36, "rgb888": "0x00FF00"},
+      {"name": "blue_bl", "x": 4, "y": 200, "width": 36, "height": 36, "rgb888": "0x0000FF"},
+      {"name": "white_br", "x": 200, "y": 200, "width": 36, "height": 36, "rgb888": "0xFFFFFF"}
+    ],
+    "digit_blocks": [
+      {"x": 91, "y": 58, "width": 25, "height": 24, "rgb888": "0xFFFF00"},
+      {"x": 108, "y": 42, "width": 28, "height": 156, "rgb888": "0xFFFF00"},
+      {"x": 78, "y": 190, "width": 88, "height": 28, "rgb888": "0xFFFF00"}
+    ]
+  }
+}

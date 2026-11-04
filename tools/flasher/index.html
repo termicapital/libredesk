@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Libre Desk — Live Data MVP Installer</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7'/%3E%3Cpath d='M8 22V10h4v8h12v4z' fill='white'/%3E%3C/svg%3E">
+  <script type="module" src="vendor/esp-web-tools-10.4.0/install-button.js" integrity="sha384-9XfyvAabgkISlB/Xb3OpshGKpZx0TOt5Mmu78SeiNU3so/p4o2s9m66vy6Utdnom"></script>
+  <style>
+    :root { --ink:#171717; --muted:#666; --line:#ebebeb; --blue:#0072f5; --surface:#fafafa; }
+    * { box-sizing: border-box; }
+    html { background:#fff; color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",sans-serif; }
+    body { margin:0; min-height:100vh; }
+    main { width:min(920px,calc(100% - 32px)); margin:0 auto; padding:72px 0 80px; }
+    .eyebrow { margin:0 0 16px; font:500 12px/1.4 ui-monospace,"SFMono-Regular",Consolas,monospace; text-transform:uppercase; color:var(--muted); }
+    h1 { max-width:920px; margin:0; font-size:clamp(40px,7vw,64px); line-height:1; letter-spacing:-3px; font-weight:650; }
+    .lead { max-width:650px; margin:24px 0 40px; color:#4d4d4d; font-size:19px; line-height:1.6; }
+    .grid { display:grid; grid-template-columns:1.15fr .85fr; gap:16px; align-items:start; }
+    .card { padding:28px; border-radius:12px; background:#fff; box-shadow:0 0 0 1px rgba(0,0,0,.08),0 2px 2px rgba(0,0,0,.04),0 8px 24px -16px rgba(0,0,0,.18),inset 0 0 0 1px #fafafa; }
+    .card h2 { margin:0 0 12px; font-size:24px; line-height:1.25; letter-spacing:-.8px; }
+    .card p,.card li { color:#4d4d4d; font-size:15px; line-height:1.55; }
+    ol { margin:16px 0 24px; padding-left:22px; }
+    li+li { margin-top:9px; }
+    code { font-family:ui-monospace,"SFMono-Regular",Consolas,monospace; font-size:.9em; color:var(--ink); }
+    .install { display:block; margin-top:24px; }
+    button { width:100%; min-height:48px; border:0; border-radius:7px; padding:12px 18px; color:#fff; background:var(--ink); font:500 15px/1 system-ui,sans-serif; cursor:pointer; transition:background .15s,transform .15s; }
+    button:hover { background:#333; }
+    button:active { transform:translateY(1px); }
+    button:focus-visible { outline:2px solid var(--blue); outline-offset:3px; }
+    .unsupported { display:block; padding:12px; color:#a12222; background:#fff5f5; border-radius:7px; font-size:14px; }
+    .pattern { display:grid; grid-template-columns:repeat(2,42px); gap:7px; width:max-content; padding:12px; margin:18px 0 16px; background:#000; border-radius:8px; box-shadow:0 0 0 1px rgba(0,0,0,.16); }
+    .swatch { width:42px; height:42px; border-radius:3px; }
+    .red{background:#f00}.green{background:#0f0}.blue{background:#00f}.white{background:#fff}
+    .meta { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 20px; }
+    .pill { padding:4px 9px; border-radius:999px; color:#0068d6; background:#ebf5ff; font:500 12px/1.4 system-ui,sans-serif; }
+    .note { margin:20px 0 0; padding-top:20px; box-shadow:0 -1px 0 var(--line); color:var(--muted); font-size:13px; line-height:1.5; }
+    footer { margin-top:32px; color:#808080; font:400 12px/1.5 ui-monospace,"SFMono-Regular",Consolas,monospace; }
+    @media (max-width:720px) { main{padding-top:44px}.grid{grid-template-columns:1fr}h1{letter-spacing:-2px}.card{padding:22px} }
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">Libre Desk / live-data MVP</p>
+  <h1>Install the live display MVP.</h1>
+  <p class="lead">A private Waveshare ESP32-C6-LCD-1.3 build where you choose the 2.4 GHz Wi-Fi during installation. It uses an authenticated HTTPS bridge and contains a revocable device token and Wi-Fi password; do not redistribute it.</p>
+  <div class="grid">
+    <section class="card">
+      <div class="meta"><span class="pill">ESP32-C6</span><span class="pill">LibreLinkUp</span><span class="pill">Live HTTPS</span></div>
+      <h2>Install and add Wi-Fi</h2>
+      <ol>
+        <li>Connect the board directly with a data-capable USB cable.</li>
+        <li>Click <strong>Install and add Wi-Fi</strong>, select the ESP32-C6 serial port, and install.</li>
+        <li>When installation finishes, choose <strong>Next</strong>.</li>
+        <li>Enter the exact <strong>Network Name</strong> and <strong>Password</strong> for the 2.4 GHz Wi-Fi.</li>
+        <li>Keep the cable connected while Libre Desk saves the network and restarts.</li>
+      </ol>
+      <esp-web-install-button class="install" manifest="manifest.json">
+        <button slot="activate" type="button">Install and add Wi-Fi</button>
+        <span class="unsupported" slot="unsupported">WebSerial is unavailable. Use desktop Chrome or Edge over HTTPS.</span>
+      </esp-web-install-button>
+      <p class="note">The Network Name and Password you enter are sent directly over the USB cable to Libre Desk. They are not uploaded to or stored by this installer server.</p>
+    </section>
+    <aside class="card">
+      <h2>What should appear</h2>
+      <p>The screen progresses through Wi-Fi connection, trusted-time synchronization, and live-data fetching. The larger clock is a zero-padded 24-hour HH:MM clock above a centered glucose number, with trend, range state, and reading age, without a visible unit label.</p>
+      <p>Acceptance requires two successive real readings to appear on the physical screen. Keep the display powered while the sensor publishes its next update.</p>
+      <h2>Wi-Fi setup</h2>
+      <p>The installer writes only the Network Name and Password. The bridge address, device token, display settings, and glucose behavior are retained automatically.</p>
+      <p class="note">BOOT setup remains available as a fallback, but it is not part of the normal installation flow.</p>
+    </aside>
+  </div>
+  <footer>Build: Libre Desk 0.5.4-webserial-wifi · ESP-IDF v5.5.5 · Board: Waveshare SKU 33643/33644</footer>
+</main>
+</body>
+</html>

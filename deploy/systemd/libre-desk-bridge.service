@@ -1,0 +1,42 @@
+[Unit]
+Description=Libre Desk LibreLinkUp bridge
+Documentation=https://github.com/termicapital/libredesk/blob/main/docs/PERMANENT_TUNNEL.md
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=libre-desk
+Group=libre-desk
+WorkingDirectory=/opt/libre-desk
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/libre-desk/bridge.env
+ExecStart=/usr/bin/node /opt/libre-desk/dist/bridge/src/main.js
+Restart=always
+RestartSec=5s
+TimeoutStopSec=20s
+KillSignal=SIGTERM
+UMask=0077
+
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateTmp=true
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectHostname=true
+ProtectKernelLogs=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectSystem=strict
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target

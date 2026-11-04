@@ -1,0 +1,8 @@
+# Copy to /etc/cloudflared/config.yml, replace every REPLACE_WITH_* value, and chmod 0600.
+tunnel: REPLACE_WITH_TUNNEL_UUID
+credentials-file: /etc/cloudflared/REPLACE_WITH_TUNNEL_UUID.json
+
+ingress:
+  - hostname: REPLACE_WITH_STABLE_HOSTNAME
+    service: http://127.0.0.1:18080
+  - service: http_status:404

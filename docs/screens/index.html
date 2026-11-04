@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'unsafe-inline'">
+<title>Libre Desk UI review</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#070b0e;color:#ecf4f7}
+*{box-sizing:border-box}body{margin:0;padding:28px;background:#070b0e}.wrap{max-width:1240px;margin:auto}
+h1{font-size:clamp(28px,5vw,52px);margin:0 0 8px}.lede{max-width:760px;color:#93a1aa;line-height:1.55;margin:0 0 26px}
+.notice{padding:14px 16px;border:1px solid #354049;border-radius:10px;color:#cbd5da;background:#10161a;margin-bottom:28px}
+.contact{display:block;max-width:100%;height:auto;border:1px solid #263139;background:#0b1014;margin:0 0 34px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}.card{position:relative;background:#10161a;border:1px solid #263139;border-radius:12px;padding:12px;min-width:0}
+.card img{display:block;width:240px;max-width:100%;height:auto;margin:auto;background:#05080a;image-rendering:auto}.card h2{font-size:16px;margin:13px 0 5px}.card p{font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;color:#7d8991;margin:0;overflow-wrap:anywhere}
+.ordinal{position:absolute;top:18px;left:18px;z-index:1;background:#05080ae6;border:1px solid #54616a;padding:3px 6px;border-radius:4px;font:11px ui-monospace,monospace;color:#ecf4f7}
+@media(max-width:520px){body{padding:18px}.grid{grid-template-columns:1fr}.card{padding:10px}}
+</style>
+</head>
+<body><main class="wrap">
+<h1>Libre Desk UI states</h1>
+<p class="lede">Exact 240×240 LVGL renders from the shared firmware component. Inspect hierarchy, clipping, range hue, aging opacity, no-number errors, night dimming, and position jitter.</p>
+<div class="notice"><strong>Passive display:</strong> synthetic values only. This device makes no sound, does not flash, and must not be relied upon as a low-glucose alarm.</div>
+<img class="contact" src="contact-sheet.png" alt="Contact sheet of all Libre Desk UI states">
+<section class="grid">
+<article class="card" id="boot"><div class="ordinal">01</div><img src="boot.png" width="240" height="240" alt="Boot / starting"><h2>Boot / starting</h2><p>boot · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="provisioning"><div class="ordinal">02</div><img src="provisioning.png" width="240" height="240" alt="Provisioning portal"><h2>Provisioning portal</h2><p>provisioning · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="wifi-connecting"><div class="ordinal">03</div><img src="wifi-connecting.png" width="240" height="240" alt="Wi-Fi connecting / long SSID"><h2>Wi-Fi connecting / long SSID</h2><p>wifi_connecting · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="time-syncing"><div class="ordinal">04</div><img src="time-syncing.png" width="240" height="240" alt="Secure clock synchronization"><h2>Secure clock synchronization</h2><p>time_syncing · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="fetching"><div class="ordinal">05</div><img src="fetching.png" width="240" height="240" alt="First bridge fetch"><h2>First bridge fetch</h2><p>fetching · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="fresh-urgent-low"><div class="ordinal">06</div><img src="fresh-urgent-low.png" width="240" height="240" alt="Fresh / urgent-low hue"><h2>Fresh / urgent-low hue</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="fresh-low"><div class="ordinal">07</div><img src="fresh-low.png" width="240" height="240" alt="Fresh / low hue"><h2>Fresh / low hue</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="fresh-in-range"><div class="ordinal">08</div><img src="fresh-in-range.png" width="240" height="240" alt="Fresh / stable trend"><h2>Fresh / stable trend</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="fresh-high"><div class="ordinal">09</div><img src="fresh-high.png" width="240" height="240" alt="Fresh / high hue"><h2>Fresh / high hue</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="fresh-rising"><div class="ordinal">10</div><img src="fresh-rising.png" width="240" height="240" alt="Fresh / rising trend"><h2>Fresh / rising trend</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="fresh-rising-slightly"><div class="ordinal">11</div><img src="fresh-rising-slightly.png" width="240" height="240" alt="Fresh / slightly rising trend"><h2>Fresh / slightly rising trend</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="fresh-falling"><div class="ordinal">12</div><img src="fresh-falling.png" width="240" height="240" alt="Fresh / falling trend"><h2>Fresh / falling trend</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="fresh-falling-slightly"><div class="ordinal">13</div><img src="fresh-falling-slightly.png" width="240" height="240" alt="Fresh / slightly falling trend"><h2>Fresh / slightly falling trend</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="fresh-rising-fast"><div class="ordinal">14</div><img src="fresh-rising-fast.png" width="240" height="240" alt="Fresh / fast-rising trend"><h2>Fresh / fast-rising trend</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="fresh-falling-fast"><div class="ordinal">15</div><img src="fresh-falling-fast.png" width="240" height="240" alt="Fresh / fast-falling trend"><h2>Fresh / fast-falling trend</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="fresh-unknown-range"><div class="ordinal">16</div><img src="fresh-unknown-range.png" width="240" height="240" alt="Fresh / unknown trend and range"><h2>Fresh / unknown trend and range</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="fresh-mmol"><div class="ordinal">17</div><img src="fresh-mmol.png" width="240" height="240" alt="Fresh / mmol/L"><h2>Fresh / mmol/L</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="aging-low"><div class="ordinal">18</div><img src="aging-low.png" width="240" height="240" alt="Aging / low and dimmed"><h2>Aging / low and dimmed</h2><p>aging · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="aging-in-range"><div class="ordinal">19</div><img src="aging-in-range.png" width="240" height="240" alt="Aging / in range and dimmed"><h2>Aging / in range and dimmed</h2><p>aging · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="stale"><div class="ordinal">20</div><img src="stale.png" width="240" height="240" alt="Stale / number hidden"><h2>Stale / number hidden</h2><p>stale · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="no-data"><div class="ordinal">21</div><img src="no-data.png" width="240" height="240" alt="No data / number hidden"><h2>No data / number hidden</h2><p>no_data · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="auth-error"><div class="ordinal">22</div><img src="auth-error.png" width="240" height="240" alt="Authentication required"><h2>Authentication required</h2><p>auth_error · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="terms-required"><div class="ordinal">23</div><img src="terms-required.png" width="240" height="240" alt="Terms acceptance required"><h2>Terms acceptance required</h2><p>terms_required · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="server-error"><div class="ordinal">24</div><img src="server-error.png" width="240" height="240" alt="Bridge or payload error"><h2>Bridge or payload error</h2><p>server_error · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="no-wifi"><div class="ordinal">25</div><img src="no-wifi.png" width="240" height="240" alt="Wi-Fi disconnected"><h2>Wi-Fi disconnected</h2><p>no_wifi · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="ota-update"><div class="ordinal">26</div><img src="ota-update.png" width="240" height="240" alt="OTA update in progress"><h2>OTA update in progress</h2><p>ota_updating · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="fresh-night"><div class="ordinal">27</div><img src="fresh-night.png" width="240" height="240" alt="Fresh / scheduled night dimming"><h2>Fresh / scheduled night dimming</h2><p>fresh · brightness 35% · jitter +0,+0</p></article>
+<article class="card" id="fresh-jitter"><div class="ordinal">28</div><img src="fresh-jitter.png" width="240" height="240" alt="Fresh / +2,-2 pixel jitter"><h2>Fresh / +2,-2 pixel jitter</h2><p>fresh · brightness 100% · jitter +2,-2</p></article>
+<article class="card" id="layout-number-with-arrow"><div class="ordinal">29</div><img src="layout-number-with-arrow.png" width="240" height="240" alt="Layout fixture / centered number with arrow"><h2>Layout fixture / centered number with arrow</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="layout-number-no-arrow"><div class="ordinal">30</div><img src="layout-number-no-arrow.png" width="240" height="240" alt="Layout fixture / centered number without arrow"><h2>Layout fixture / centered number without arrow</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="layout-two-digit-with-arrow"><div class="ordinal">31</div><img src="layout-two-digit-with-arrow.png" width="240" height="240" alt="Layout fixture / two digits with arrow"><h2>Layout fixture / two digits with arrow</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="layout-two-digit-no-arrow"><div class="ordinal">32</div><img src="layout-two-digit-no-arrow.png" width="240" height="240" alt="Layout fixture / two digits without arrow"><h2>Layout fixture / two digits without arrow</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="layout-asymmetric-with-arrow"><div class="ordinal">33</div><img src="layout-asymmetric-with-arrow.png" width="240" height="240" alt="Layout fixture / asymmetric digits with arrow"><h2>Layout fixture / asymmetric digits with arrow</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="layout-asymmetric-no-arrow"><div class="ordinal">34</div><img src="layout-asymmetric-no-arrow.png" width="240" height="240" alt="Layout fixture / asymmetric digits without arrow"><h2>Layout fixture / asymmetric digits without arrow</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="layout-mmol-wide-with-arrow"><div class="ordinal">35</div><img src="layout-mmol-wide-with-arrow.png" width="240" height="240" alt="Layout fixture / widest decimal with arrow"><h2>Layout fixture / widest decimal with arrow</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="layout-mmol-wide-no-arrow"><div class="ordinal">36</div><img src="layout-mmol-wide-no-arrow.png" width="240" height="240" alt="Layout fixture / widest decimal without arrow"><h2>Layout fixture / widest decimal without arrow</h2><p>fresh · brightness 100% · jitter +0,+0</p></article>
+<article class="card" id="layout-mmol-wide-jitter"><div class="ordinal">37</div><img src="layout-mmol-wide-jitter.png" width="240" height="240" alt="Layout fixture / widest decimal +2,-2 jitter"><h2>Layout fixture / widest decimal +2,-2 jitter</h2><p>fresh · brightness 100% · jitter +2,-2</p></article>
+</section></main></body></html>

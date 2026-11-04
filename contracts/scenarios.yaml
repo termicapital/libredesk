@@ -1,0 +1,54 @@
+version: 1
+scenarios:
+  - name: normal
+    description: Valid flat reading with a stable trend and configured target range.
+  - name: flat_line
+    description: Valid flat reading with a stable trend.
+  - name: rising
+    description: Valid reading with a single-up trend.
+  - name: falling
+    description: Valid reading with a single-down trend.
+  - name: stale_5m
+    description: Valid reading five minutes old.
+  - name: stale_20m
+    description: Valid reading twenty minutes old.
+  - name: stale_2h
+    description: Valid reading two hours old.
+  - name: no_readings
+    description: Connection exists but has no glucose measurement.
+  - name: future_timestamp
+    description: Measurement timestamp is more than the allowed future skew.
+  - name: value_out_of_range
+    description: Measurement is outside the accepted physiological plausibility bounds.
+  - name: null_value
+    description: Measurement value is explicitly null.
+  - name: malformed_json
+    description: Graph endpoint returns invalid JSON.
+  - name: truncated_response
+    description: Graph endpoint closes before a complete JSON document is delivered.
+  - name: http_500
+    description: Upstream graph endpoint returns HTTP 500.
+  - name: http_401_expired_ticket
+    description: Upstream graph endpoint returns HTTP 401 after login.
+  - name: region_redirect
+    description: Login asks the client to retry against the EU regional host.
+  - name: terms_of_use_required
+    description: Login is blocked by a terms-of-use interstitial.
+  - name: slow_10s
+    description: Graph endpoint waits ten seconds before responding.
+  - name: connection_reset
+    description: Graph endpoint resets the TCP connection.
+  - name: mmol_units
+    description: Valid reading where the account display unit is mmol/L.
+  - name: trend_notcomputable
+    description: Measurement uses Libre's not-computable trend arrow.
+  - name: range_low
+    description: Valid reading below the configured target range.
+  - name: range_urgent_low
+    description: Valid reading below the urgent-low threshold.
+  - name: range_high
+    description: Valid reading above the configured target range.
+  - name: no_target_range
+    description: Connection does not provide target thresholds.
+  - name: target_range_changed
+    description: Connection target thresholds differ from the normal scenario.

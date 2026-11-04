@@ -1,0 +1,10 @@
+{
+  "fixtures": [
+    "fresh.json",
+    "aging.json",
+    "stale.json",
+    "no-data.json",
+    "auth-error.json",
+    "server-error.json"
+  ]
+}

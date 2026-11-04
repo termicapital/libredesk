@@ -1,0 +1,5 @@
+{
+  "error": "upstream_unavailable",
+  "detail": "no validated reading within max_age",
+  "retry_after_s": 30
+}

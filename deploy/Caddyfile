@@ -1,0 +1,27 @@
+{$LIBRE_HOST:localhost} {
+	encode zstd gzip
+
+	header {
+		-Server
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), serial=(self)"
+	}
+
+	@flasher_root path /flasher
+	redir @flasher_root /flasher/ 308
+
+	handle_path /flasher/* {
+		root * /srv/flasher
+		header {
+			Cache-Control "no-store"
+			Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; worker-src 'self' blob:"
+		}
+		file_server
+	}
+
+	handle {
+		reverse_proxy bridge:8080
+	}
+}

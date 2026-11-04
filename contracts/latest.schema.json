@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://libre-desk.invalid/contracts/latest.schema.json",
+  "title": "Libre Desk latest reading",
+  "description": "Validated, non-expired glucose data returned to the display. The bridge must never synthesize this object.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "glucose", "unit", "trend", "range", "target_low", "target_high",
+    "timestamp", "libre_local_time", "age_s", "server_time", "source", "poll_after_s", "schema"
+  ],
+  "properties": {
+    "glucose": { "type": "number" },
+    "unit": { "enum": ["mg/dL", "mmol/L"] },
+    "trend": {
+      "enum": [
+        "rising", "rising_slightly", "stable", "falling_slightly",
+        "falling", "rising_fast", "falling_fast", "unknown"
+      ]
+    },
+    "range": { "enum": ["urgent_low", "low", "in_range", "high", "unknown"] },
+    "target_low": { "type": ["number", "null"], "minimum": 0 },
+    "target_high": { "type": ["number", "null"], "minimum": 0 },
+    "timestamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?Z$"
+    },
+    "libre_local_time": {
+      "type": "string",
+      "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$"
+    },
+    "age_s": { "type": "integer", "minimum": 0 },
+    "server_time": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,9})?Z$"
+    },
+    "source": { "enum": ["librelinkup", "mock"] },
+    "poll_after_s": { "type": "integer", "minimum": 20, "maximum": 300 },
+    "schema": { "const": 2 }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "unit": { "const": "mg/dL" } }, "required": ["unit"] },
+      "then": {
+        "properties": {
+          "glucose": { "type": "number", "minimum": 20, "maximum": 500 },
+          "target_low": { "type": ["number", "null"], "minimum": 0, "maximum": 500 },
+          "target_high": { "type": ["number", "null"], "minimum": 0, "maximum": 500 }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "unit": { "const": "mmol/L" } }, "required": ["unit"] },
+      "then": {
+        "properties": {
+          "glucose": { "type": "number", "minimum": 1, "maximum": 28 },
+          "target_low": { "type": ["number", "null"], "minimum": 0, "maximum": 28 },
+          "target_high": { "type": ["number", "null"], "minimum": 0, "maximum": 28 }
+        }
+      }
+    }
+  ]
+}

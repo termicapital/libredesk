@@ -1,0 +1,51 @@
+services:
+  bridge:
+    build:
+      context: ..
+      dockerfile: bridge/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - ${BRIDGE_ENV_FILE:-/etc/libre-desk/bridge.docker.env}
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    user: "10001:10001"
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 256m
+    init: true
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    volumes:
+      - ../firmware-releases:/srv/firmware:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+  cloudflared:
+    image: cloudflare/cloudflared:2026.6.1@sha256:6d91c121b803126f7a5344005d17a9324788fc09d305b6e2560ec6040a7ae283
+    restart: unless-stopped
+    depends_on:
+      bridge:
+        condition: service_healthy
+    command: ["tunnel", "--no-autoupdate", "run"]
+    env_file:
+      - ${CLOUDFLARED_ENV_FILE:-/etc/libre-desk/cloudflared.env}
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 128m
+    init: true
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"

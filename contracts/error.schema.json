@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://libre-desk.invalid/contracts/error.schema.json",
+  "title": "Libre Desk device API error",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["error", "detail", "retry_after_s"],
+  "properties": {
+    "error": {
+      "enum": [
+        "invalid_token", "revoked_token", "rate_limited", "upstream_unavailable",
+        "upstream_auth_failed", "internal", "malformed_upstream", "terms_of_use_required",
+        "invalid_payload", "ota_unavailable"
+      ]
+    },
+    "detail": { "type": "string", "minLength": 1, "maxLength": 240 },
+    "retry_after_s": { "type": "integer", "minimum": 0, "maximum": 3600 }
+  }
+}

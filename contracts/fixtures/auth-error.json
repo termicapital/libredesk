@@ -1,0 +1,5 @@
+{
+  "error": "invalid_token",
+  "detail": "device token rejected",
+  "retry_after_s": 0
+}

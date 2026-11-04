@@ -1,0 +1,5 @@
+{
+  "error": "internal",
+  "detail": "bridge internal error",
+  "retry_after_s": 30
+}

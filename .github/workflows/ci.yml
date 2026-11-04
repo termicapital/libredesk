@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "feat/**"]
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  bridge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check publication file boundary
+        run: python3 scripts/check-public-files.py
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  firmware-host:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install host toolchain
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends build-essential cmake python3
+      - run: ./scripts/test-mvp-config.sh
+      - run: ./scripts/test-wifi-startup-flow.sh
+      - run: ./scripts/test-mvp-http-flow.sh
+      - run: ./scripts/test-runtime-core.sh
+      - run: ./scripts/test-config-store.sh --report
+      - run: ./scripts/test-provisioning-flow.sh
+      - run: python3 deploy/test_deployment_templates.py
+      - run: python3 docs/test_replication_snippets.py
+      - run: python3 firmware/test/test_runtime_foundation.py -v
+      - run: python3 firmware/main/test_physical_calibration.py -v
+      - run: python3 tools/flasher/test_package_firmware.py -v
+      - run: python3 tools/flasher/test_static_site.py -v
+      - run: python3 tools/flasher/test_serve_private.py -v

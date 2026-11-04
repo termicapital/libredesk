@@ -1,0 +1,28 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "outputDirectory": "public",
+  "regions": ["fra1"],
+  "rewrites": [
+    {
+      "source": "/api/v1/latest",
+      "destination": "/api/latest"
+    },
+    {
+      "source": "/api/v2/latest",
+      "destination": "/api/latest-v2"
+    },
+    {
+      "source": "/api/v1/ingest",
+      "destination": "/api/ingest"
+    },
+    {
+      "source": "/healthz",
+      "destination": "/api/health"
+    }
+  ]
+}
